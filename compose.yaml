@@ -1,0 +1,20 @@
+services:
+  datomic:
+    build:
+      context: .
+      target: prod
+      args:
+          - VERSION=1.0.7075
+      tags:
+          - com.github.guillerglez88/datomic-pro:latest
+          - com.github.guillerglez88/datomic-pro:1.0.7075
+    ports:
+        - "4334:4334"
+        - "4335:4335"
+        - "5432:5432"
+    environment:
+      - DATOMIC_STORAGE_ADMIN_PASSWORD=admin
+      - DATOMIC_STORAGE_DATOMIC_PASSWORD=datomic
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ./data:/var/lib/postgresql/data
