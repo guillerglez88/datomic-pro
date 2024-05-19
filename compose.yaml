@@ -9,8 +9,8 @@ services:
           - com.github.guillerglez88/datomic-pro:latest
           - com.github.guillerglez88/datomic-pro:1.0.7075
     ports:
-        - "4334:4334"
-        - "4335:4335"
+        - "4338:4334"
+        - "4339:4335"
         - "5432:5432"
     environment:
       - DATOMIC_STORAGE_ADMIN_PASSWORD=admin

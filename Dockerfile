@@ -1,7 +1,8 @@
 FROM eclipse-temurin:22-jre-alpine as base
 WORKDIR /app
 ARG VERSION
-COPY datomic-pro-${VERSION}.zip .
+RUN apk update && apk add curl
+RUN curl https://datomic-pro-downloads.s3.amazonaws.com/${VERSION}/datomic-pro-${VERSION}.zip -O
 RUN unzip datomic-pro-${VERSION}.zip
 RUN mv ./datomic-pro-${VERSION} ./datomic-pro
 COPY transactor.properties ./datomic-pro/config/transactor.properties
