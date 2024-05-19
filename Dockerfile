@@ -6,6 +6,8 @@ RUN curl https://datomic-pro-downloads.s3.amazonaws.com/${VERSION}/datomic-pro-$
 RUN unzip datomic-pro-${VERSION}.zip
 RUN mv ./datomic-pro-${VERSION} ./datomic-pro
 COPY transactor.properties ./datomic-pro/config/transactor.properties
+COPY restore-backup.sh .
+RUN chmod +x ./restore-backup.sh
 
 FROM postgres:12.19-alpine as prod
 WORKDIR /app
@@ -20,6 +22,8 @@ COPY --from=base $JAVA_HOME $JAVA_HOME
 COPY --from=base /app/datomic-pro .
 COPY --from=base /app/datomic-pro/bin/sql/postgres-table.sql /docker-entrypoint-initdb.d/
 COPY --from=base /app/datomic-pro/bin/sql/postgres-user.sql /docker-entrypoint-initdb.d/
+COPY --from=base /app/restore-backup.sh .
+VOLUME ["/app/data"]
 EXPOSE 4334
 EXPOSE 4335
 EXPOSE 5432
@@ -32,4 +36,5 @@ ENTRYPOINT exec \
     && echo "storage-datomic-password=$DATOMIC_STORAGE_DATOMIC_PASSWORD" >> ./config/transactor.properties \
     && docker-entrypoint.sh -c 'shared_buffers=2GB' \
     & ./bin/transactor config/transactor.properties \
+    & ./restore-backup.sh \
     & ./bin/console -p 8080 sql datomic:sql://?jdbc:postgresql://localhost:5432/$POSTGRES_DB?user=datomic\&password=$DATOMIC_STORAGE_DATOMIC_PASSWORD
