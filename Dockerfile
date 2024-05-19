@@ -23,6 +23,7 @@ COPY --from=base /app/datomic-pro/bin/sql/postgres-user.sql /docker-entrypoint-i
 EXPOSE 4334
 EXPOSE 4335
 EXPOSE 5432
+EXPOSE 8080
 ENTRYPOINT exec \
     && echo "sql-url=jdbc:postgresql://localhost:5432/$POSTGRES_DB" >> ./config/transactor.properties \
     && echo "sql-user=$POSTGRES_USER" >> ./config/transactor.properties \
@@ -30,4 +31,5 @@ ENTRYPOINT exec \
     && echo "storage-admin-password=$DATOMIC_STORAGE_ADMIN_PASSWORD" >> ./config/transactor.properties \
     && echo "storage-datomic-password=$DATOMIC_STORAGE_DATOMIC_PASSWORD" >> ./config/transactor.properties \
     && docker-entrypoint.sh -c 'shared_buffers=2GB' \
-    & ./bin/transactor config/transactor.properties
+    & ./bin/transactor config/transactor.properties \
+    & ./bin/console -p 8080 sql datomic:sql://?jdbc:postgresql://localhost:5432/$POSTGRES_DB?user=datomic\&password=$DATOMIC_STORAGE_DATOMIC_PASSWORD
