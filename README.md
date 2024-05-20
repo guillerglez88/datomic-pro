@@ -6,6 +6,20 @@ Datomic SQL docker image
 - postgres:12.19-alpine
 - eclipse-temurin:22-jre-alpine
 
+## Usage
+
+`git clone https://github.com/guillerglez88/datomic-pro.git --depth=1`
+
+`cd ./datomic-pro`
+
 `docker compose up --build`
 
-`connection-string: datomic:sql://<db-name>?jdbc:postgresql://localhost:5432/datomic?user=<user>&password=<pass>`
+## Connect
+
+- datomic-uri: `datomic:sql://<db-name>?jdbc:postgresql://localhost:5432/datomic?user=datomic&password=<pass>`
+- datomic-console: `http://localhost:8080/browse`
+- postgres: `jdbc:postgresql://localhost:5432/datomic?user=postgres&password=postgres`
+
+## Restore backups
+
+When the container is created, there is a script that checks for /backups/.restore-log under the `data` volume dir and creates it if doesn't exist. To restore datomic backups, you only need to drop a backup .zip file under /backups folder and restart the container. When the backup is successfully restored, the .zip file path is appended to /backups/.restore-log file e.g: `/app/data/backups/backup-1715945814.zip` so that the next time you restart de container it won't try to restore the backup. If you want to reset the storage, you should remove /pgdata dir under the `data` volume. If you need to restore a backup already added to /backups/.restore-log, only remove its line from this file.
