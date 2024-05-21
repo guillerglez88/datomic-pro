@@ -14,9 +14,14 @@ services:
         - "5432:5432"
         - "8080:8080"
     environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
       - DATOMIC_STORAGE_ADMIN_PASSWORD=admin
       - DATOMIC_STORAGE_DATOMIC_PASSWORD=datomic
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      #
+      # un comment the followint line to connect
+      # from a docker container running locally
+      #
+      # - DATOMIC_ALT_HOST=host.docker.internal
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./data:/app/data

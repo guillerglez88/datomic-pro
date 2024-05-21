@@ -6,6 +6,8 @@ echo "sql-user=$POSTGRES_USER" >> ./config/transactor.properties
 echo "sql-password=$POSTGRES_PASSWORD" >> ./config/transactor.properties
 echo "storage-admin-password=$DATOMIC_STORAGE_ADMIN_PASSWORD" >> ./config/transactor.properties
 echo "storage-datomic-password=$DATOMIC_STORAGE_DATOMIC_PASSWORD" >> ./config/transactor.properties
+echo "host=$DATOMIC_HOST" >> ./config/transactor.properties
+echo "alt-host=$DATOMIC_ALT_HOST" >> ./config/transactor.properties
 
 # start postgres entrypoint
 docker-entrypoint.sh -c 'shared_buffers=2GB' &
