@@ -9,6 +9,9 @@ echo "storage-datomic-password=$DATOMIC_STORAGE_DATOMIC_PASSWORD" >> ./config/tr
 echo "host=$DATOMIC_HOST" >> ./config/transactor.properties
 echo "alt-host=$DATOMIC_ALT_HOST" >> ./config/transactor.properties
 
+# delete datomic current db
+./delete-current-db.sh
+
 # start postgres entrypoint
 docker-entrypoint.sh -c 'shared_buffers=2GB' &
 
