@@ -22,9 +22,8 @@ Datomic SQL docker image
 
 ```edn
 {:deps {
-  com.datomic/peer {:maven/version "1.0.7277"}
-  org.postgresql/postgresql {:maven/version "42.7.5"}
-}}
+  com.datomic/peer {:mvn/version "1.0.7075"}
+  org.postgresql/postgresql {:mvn/version "42.7.3"}}}
 ```
 
 ```clojure
